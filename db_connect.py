@@ -117,11 +117,11 @@ def get_user_words(cid):
                         FROM userword u
                         JOIN users u2 on u.telegram_id = u2.id
                         JOIN words w on u.word_id = w.id
-                        WHERE u2.telegram_id = '%s';""", [cid])
-            userwords_list = cur.fetchall()
-            target_list = random.choice(userwords_list)
-            userwords_list.remove(target_list)
-            owner_list = random.choices(userwords_list, k=3)
+                        WHERE u2.telegram_id = '%s'
+                        ORDER BY RANDOM() LIMIT 4;""", [cid])
+            all_words = cur.fetchall()
+            target_list = all_words[0]
+            owner_list = all_words[1:]
             owner_word_list = [owner_list[0][0], owner_list[1][0], owner_list[2][0]]
     conn.commit()
     return target_list, owner_word_list
